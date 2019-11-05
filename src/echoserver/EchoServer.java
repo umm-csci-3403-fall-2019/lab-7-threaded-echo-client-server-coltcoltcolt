@@ -15,42 +15,35 @@ public class EchoServer implements Runnable {
 		server.start();
 	}
 
-	public void run(){
-
-	}
-
+	public void run(){}
 
 	private void start() throws IOException, InterruptedException {
 		ServerSocket serverSocket = new ServerSocket(PORT_NUMBER);
 		while (true) {
 			Socket client = serverSocket.accept();
-			Thread serverThread = new Thread(new EchoServer());
-			serverThread.start();
-
 			OutputStream output = client.getOutputStream();
-			InputStream input = client.getInputStream();
-
-
-			while(1==1) { //do always, this is a server
-				int request = client.getInputStream().read(); //get the request from client's input
-				if (request != -1) { //if the request is readable, print it to user
-					output.write(request);
+			Thread serverThread = new Thread(new EchoServer(){
+				@Override
+				public void run() {
+					try {
+						while (1 == 1) { //do always, this is a server
+							int request = client.getInputStream().read(); //get the request from client's input
+							if (request != -1) { //if the request is readable, print it to user
+								output.write(request);
+							} else { //if it isn't, don't, and get rid of buffer
+								output.flush();
+								break;
+							}
+						}
+						client.close();
+					} catch (
+							IOException ioe) {
+						System.out.println("We caught an unexpected exception");
+						System.err.println(ioe);
+					}
 				}
-				else { //if it isn't, don't, and get rid of buffer
-					output.flush();
-					break;
-				}
-			}
-
-			// Close the client socket since we're done.
-			client.close();
-
-			// Put your code here.
-			// This should do very little, essentially:
-			//   * Construct an instance of your runnable class
-			//   * Construct a Thread with your runnable
-			//      * Or use a thread pool
-			//   * Start that thread
+			});
+			serverThread.start(); // Close the client socket since we're done.
 		}
 	}
 }
