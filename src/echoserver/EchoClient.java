@@ -24,6 +24,8 @@ public class EchoClient implements Runnable {
 
 	}
 
+
+
 	private void start() throws IOException {
 
 		Thread clientThreadIn = new Thread(new EchoServer());
@@ -31,6 +33,16 @@ public class EchoClient implements Runnable {
 
 		clientThreadIn.start();
 		clientThreadOut.start();
+		clientThreadIn.setName("clientThreadIn");
+        clientThreadOut.setName("clientThreadOut");
+
+
+        if ("clientThreadIn".equals(Thread.currentThread().getName())){
+            System.out.println("bing bang bong");
+        }
+		if ("clientThreadOut".equals(Thread.currentThread().getName())){
+            System.out.println("blah blah blah");
+        }
 
 		try {
 
