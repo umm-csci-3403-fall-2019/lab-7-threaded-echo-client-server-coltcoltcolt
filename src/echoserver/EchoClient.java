@@ -21,28 +21,30 @@ public class EchoClient implements Runnable {
 	}
 
 	public void run(){
-
-	}
-
+	    
+    }
 
 
 	private void start() throws IOException {
 
-		Thread clientThreadIn = new Thread(new EchoServer());
-		Thread clientThreadOut = new Thread(new EchoServer());
+		Thread clientThreadIn = new Thread(new EchoServer() {
+		    @Override
+            public void run(){
+
+            }
+        });
+		Thread clientThreadOut = new Thread(new EchoServer() {
+        @Override
+            public void run(){
+
+
+            }
+        });
 
 		clientThreadIn.start();
 		clientThreadOut.start();
-		clientThreadIn.setName("clientThreadIn");
-        clientThreadOut.setName("clientThreadOut");
 
 
-        if ("clientThreadIn".equals(Thread.currentThread().getName())){
-            System.out.println("bing bang bong");
-        }
-		if ("clientThreadOut".equals(Thread.currentThread().getName())){
-            System.out.println("blah blah blah");
-        }
 
 		try {
 
